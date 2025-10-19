@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneySense — from Barter to Bitcoin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Theme Management */
+        :root {
+            /* Light Mode Defaults (Default on load) */
+            --bg-primary: #f0f7ff;      /* Very Light Blue/Off-White */
+            --bg-secondary: #ffffff;    /* Pure White (Card) */
+            --text-primary: #1a3044;    /* Dark Navy Text */
+            --text-secondary: #3b5998;  /* Muted Blue */
+            --accent-color: #3b82f6;    /* Sky Blue */
+            --accent-light: #60a5fa;    /* Lighter Sky Blue */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #e0e7ff;
+            --table-header-bg: #3b5998;
+        }
+
+        /* Dark Mode Overrides */
+        .dark-mode {
+            --bg-primary: #0d1a26;      /* Very Dark Navy */
+            --bg-secondary: #1a3044;    /* Slightly lighter Navy (Card) */
+            --text-primary: #e6f7ff;    /* Off-White/Light Cyan */
+            --text-secondary: #78a2e3;  /* Muted Blue */
+            --accent-color: #00bcd4;    /* Teal/Cyan */
+            --accent-light: #4dd0e1;    /* Lighter Teal */
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --border-color: #244160;
+            --table-header-bg: #244160;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Confetti Styles */
+        .confetti-piece {
+            position: fixed; 
+            top: -10vh; 
+            width: 25px; 
+            height: 25px;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 1;
+            pointer-events: none; 
+            animation-name: fall;
+            animation-timing-function: linear; 
+            animation-fill-mode: forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fall {
+            0% { opacity: 1; transform: translateY(-10vh) rotateZ(0deg); }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(120vh) rotateZ(1080deg); }
+        }
+        /* End Confetti Styles */
+
+        /* Typography */
+        h1 {
+            color: var(--accent-light);
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent-color);
+            font-size: 2.8em;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        h2 {
+            color: var(--text-secondary);
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+            margin-top: 45px;
+            font-size: 1.6em;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        h3 {
+            color: var(--accent-light);
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        /* Layout Sections */
+        .section-box {
+            background-color: var(--bg-secondary);
+            padding: 25px;
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+        .intro-box {
+            background-color: var(--border-color);
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--accent-color);
+        }
+
+        /* Lists and Elements */
+        ul { list-style: none; padding-left: 0; margin-top: 15px; }
+        li { margin-bottom: 12px; position: relative; padding-left: 30px; }
+        li::before {
+            content: '⭐'; color: var(--accent-color); font-weight: bold;
+            position: absolute; left: 0; font-size: 1em;
+        }
+        .career-list li::before, .skill-list li::before, .steps-list li::before {
+             content: '→'; color: var(--accent-light); font-size: 1.2em;
+        }
+        .skill-list li strong { color: var(--accent-light); }
+        
+        /* Buttons and Interactive Elements */
+        .button-group { text-align: center; margin: 30px 0; }
+        .action-button {
+            background-color: var(--accent-color); color: var(--bg-primary);
+            border: none; padding: 12px 25px; margin: 0 10px;
+            border-radius: 5px; cursor: pointer; font-size: 1em;
+            font-weight: 700; transition: background-color 0.3s, transform 0.2s;
+            text-decoration: none; display: inline-block;
+        }
+        .action-button:hover { background-color: var(--accent-light); transform: translateY(-2px); }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            position: fixed; top: 20px; right: 20px;
+            background: var(--bg-secondary); color: var(--accent-color);
+            border: 2px solid var(--accent-color); width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; font-size: 1.2em;
+            line-height: 40px; text-align: center; z-index: 1000;
+            transition: background 0.3s, color 0.3s;
+        }
+        #theme-toggle:hover { background: var(--accent-color); color: var(--bg-primary); }
+
+        /* Quiz Specific Styling */
+        .quiz-question { margin-bottom: 25px; padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .quiz-question p { font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+        .quiz-question label {
+            display: block; margin: 8px 0; cursor: pointer;
+            padding: 8px 10px; border-radius: 5px; transition: background-color 0.2s;
+        }
+        .quiz-question label:hover { background-color: var(--border-color); }
+        #quiz-results {
+            margin-top: 30px; padding: 20px; border: 2px solid var(--accent-light);
+            border-radius: 8px; background-color: var(--bg-primary); text-align: center;
+            font-weight: 700; display: none;
+        }
+
+        /* Table Styling for Team */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background-color: var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px var(--shadow-color); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--bg-primary); }
+        th { background-color: var(--table-header-bg); color: var(--bg-primary); font-weight: 700; }
+        td:first-child { color: var(--accent-light); }
+        .mentor-section { margin-top: 25px; padding-top: 15px; border-top: 1px dashed var(--text-secondary); }
+        .mentor-section p { margin: 5px 0; font-size: 1.1em; color: var(--text-secondary); }
+        
+        .closing { text-align: center; padding: 30px 0; margin-top: 30px; font-size: 1.4em; color: var(--accent-light); font-weight: 500; }
+        .footer { text-align: center; font-size: 0.8em; color: var(--text-secondary); padding-top: 20px; padding-bottom: 20px; }
+
+        /* --- CHATBOT STYLES --- */
+        #chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            border: none;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            line-height: 55px;
+            text-align: center;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            z-index: 1100;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #chat-icon:hover {
+            background-color: var(--accent-light);
+            transform: scale(1.05);
+        }
+
+        #chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            z-index: 1099;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid var(--accent-color);
+        }
+
+        #chat-header {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 15px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #chat-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        #chat-body {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: var(--bg-primary);
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 15px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--accent-light);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: var(--border-color);
+            color: var(--text-primary);
+            border-bottom-left-radius: 2px;
+        }
+
+        #chat-input-area {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+            padding: 10px;
+            background-color: var(--bg-secondary);
+        }
+        #chat-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin-right: 5px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        #chat-send-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        #chat-send-btn:hover {
+            background-color: var(--accent-light);
+        }
+        /* --- END CHATBOT STYLES --- */
+        
+    </style>
+</head>
+<body class="light-mode">
+    <button id="theme-toggle" aria-label="Toggle dark and light theme">
+        &#9790; </button>
+    
+    <div class="container">
+        
+        <h1>MoneySense — from Barter to Bitcoin</h1>
+        <span class="subtitle">
+            Presented by Udaan - Finance Team — Delhi Private School Dubai
+        </span>
+
+        <div class="button-group">
+            <a href="#about" class="action-button">About</a>
+            <a href="#future" class="action-button">Future</a>
+            <a href="#skills" class="action-button">Skills</a>
+            <a href="#booth" class="action-button">Activities</a>
+            <a href="#risk-quiz" class="action-button">Risk Quiz 🧠</a>
+            <a href="#team" class="action-button">Team</a>
+        </div>
+        
+        <h2 id="about">✦ About MoneySense</h2>
+        <div class="intro-box">
+            <p><strong style="color: var(--accent-light);">MoneySense</strong> is our student showcase and financial literacy booth. At "Finance Your Future" we invite students to explore the world of money through hands-on simulations, real examples, and friendly financial challenges. We want to inspire future financial leaders and show how smart money management shapes everyday life and global economies.</p>
+            <p style="margin-top: 15px;"><strong style="color: var(--accent-light);">Venue:</strong> Delhi Private School Dubai — Udaan 2025</p>
+
+            <h3>Why we made this booth</h3>
+            <ul class="idea-list">
+                <li>To teach practical financial skills like budgeting and saving in a fun way.</li>
+                <li>To show career paths and tools for young financial thinkers.</li>
+                <li>To build confidence through making smart money choices.</li>
+            </ul>
+        </div>
+        
+        <h2 id="finance-def">💡 WHAT IS FINANCE?</h2>
+        <div class="section-box">
+            <p>Finance is the process of managing money, credit, and investments to solve problems related to resource allocation, risk, and future value. Financial experts combine math, data, and strategy to build smart solutions for individuals, businesses, and governments.</p>
+            <p style="margin-top: 15px;"><strong style="color: var(--accent-light);">Examples:</strong> Saving accounts, loan interest, budgeting apps, stock market investing, and government taxes.</p>
+        </div>
+
+        <h2 id="future">🚀 FUTURE OF FINANCE</h2>
+        <div class="section-box">
+            <p>Finance is growing fast. New fields like FinTech, AI, Blockchain, and Predictive Analytics are creating massive opportunities. Financial professionals work in banking, insurance, technology, economics, and consulting—and the demand for tech-savvy specialists keeps increasing worldwide.</p>
+            <h3>Career Ideas:</h3>
+            <ul class="career-list">
+                <li>Blockchain Consultant (Advises firms on using blockchain for secure transactions)</li>
+                <li>Green Finance Specialist (Funds sustainable energy projects)</li>
+                <li>AI Ethics Specialist (Ensures AI systems are fair, transparent, and responsible)</li>
+                <li>Metaverse Asset Evaluator (Assesses value of digital land and virtual goods)</li>
+                <li>Cyber Risk Underwriter (Insures businesses against hacking losses)</li>
+            </ul>
+        </div>
+
+        <h2 id="ai">🤖 FINANCE & AI</h2>
+        <div class="section-box">
+            <p>AI can process billions of data points and speed up repetitive work like fraud detection and algorithmic trading, but it cannot handle ethical dilemmas, build complex client trust, or understand human emotions that drive market panic. Financial professionals will use AI as a powerful tool—to analyze data, simulate risks, and speed up reporting. Human judgment, ethics, and strategic planning remain the most important parts of finance.</p>
+        </div>
+
+        <h2 id="challenges">💪 MOTIVATION & CHALLENGES</h2>
+        <div class="section-box">
+            <p>Managing money includes both rewarding and tricky moments: financial market volatility, controlling impulse spending, and managing debt. These challenges are part of learning. Try new strategies, learn from every investment mistake, and remember every disciplined saving habit brings you closer to a great financial future.</p>
+            <p style="font-style: italic; color: var(--text-secondary); margin-top: 15px;">"Risk comes from not knowing what you're doing." — inspired by Warren Buffett</p>
+        </div>
+
+        <h2 id="skills">🧠 SKILLS YOU NEED</h2>
+        <div class="section-box">
+            <p>To be a strong financial thinker, practice these skills:</p>
+            <ul class="skill-list">
+                <li><strong>🧮 Numeracy & Analytics</strong> — process data, understand interest rates, and calculate returns.</li>
+                <li><strong>💬 Communication</strong> — explain complex financial ideas clearly to others.</li>
+                <li><strong>🤝 Teamwork</strong> — work with economic, tech, and policy experts.</li>
+                <li><strong>💻 Digital Tools</strong> — Excel, Python/R, or financial modeling software.</li>
+                <li><strong>🔍 Curiosity</strong> — observe market details and ask “why does this company succeed?”</li>
+            </ul>
+        </div>
+        
+        <h2 id="risk-quiz">🧠 FIND YOUR RISK PROFILE — QUIZ</h2>
+        <div class="section-box">
+            <p>Use this quick quiz to discover your natural approach to financial risk and challenge yourself to think like an investor!</p>
+            <form id="riskQuizForm">
+                <div class="quiz-question"> <p>1. If you unexpectedly receive 1,000 AED, how would you most likely use it?</p> <label><input type="radio" name="q1" value="1" required> Put it all in a savings account or secure bond.</label> <label><input type="radio" name="q1" value="2"> Save 50% and spend the other 50% on a large purchase.</label> <label><input type="radio" name="q1" value="3"> Invest 80% in a stock you think has huge growth potential.</label> </div>
+                <div class="quiz-question"> <p>2. You check your investment account, and a stock you own has dropped 20% in value. What do you do?</p> <label><input type="radio" name="q2" value="1" required> Sell immediately to cut your losses.</label> <label><input type="radio" name="q2" value="2"> Hold it and wait for it to recover, assuming the original business idea is still good.</label> <label><input type="radio" name="q2" value="3"> Buy more, seeing the lower price as a buying opportunity.</label> </div>
+                <div class="quiz-question"> <p>3. When considering a long-term savings goal (e.g., for college), which sounds best?</p> <label><input type="radio" name="q3" value="1" required> A guarantee that you will never lose money, even if returns are small.</label> <label><input type="radio" name="q3" value="2"> A mix of stable and growth investments, accepting small losses for moderate gains.</label> <label><input type="radio" name="q3" value="3"> The highest potential return, even if there's a serious chance of losing 50% of your money.</label> </div>
+                <div class="quiz-question"> <p>4. How comfortable are you with debt (loans/credit cards) for a big purchase, like a car?</p> <label><input type="radio" name="q4" value="1" required> Very uncomfortable; I would only buy it with cash I already have saved.</label> <label><input type="radio" name="q4" value="2"> Slightly comfortable; I would take a small loan only if the monthly payment is tiny.</label> <label><input type="radio" name="q4" value="3"> Comfortable; I'd use a moderate loan if I believe the purchase is necessary and worthwhile.</label> </div>
+                <div class="quiz-question"> <p>5. Would you invest 10% of your money in a new, unproven start-up company in FinTech?</p> <label><input type="radio" name="q5" value="1" required> No, absolutely not. Too risky.</label> <label><input type="radio" name="q5" value="2"> Maybe, if I researched the team and the idea thoroughly.</label> <label><input type="radio" name="q5" value="3"> Yes, these early bets offer the biggest rewards, even if the odds are low.</label> </div>
+                <div class="button-group">
+                    <button type="submit" class="action-button">Calculate My Risk Profile</button>
+                    <button type="reset" class="action-button" onclick="document.getElementById('quiz-results').style.display = 'none';">Reset Quiz</button>
+                </div>
+            </form>
+
+            <div id="quiz-results">
+                <h3>Your Financial Risk Profile: <span id="risk-level"></span></h3>
+                <p id="risk-description"></p>
+                <p style="margin-top: 15px; font-weight: 700;">Examples of investments for you: <span id="risk-examples" style="color: var(--accent-light);"></span></p>
+            </div>
+        </div>
+
+        <h2 id="booth">🎨 BOOTH ACTIVITIES — TRY THESE</h2>
+        <div class="section-box">
+            <p>At our booth you can:</p>
+            <ul>
+                <li>Design Your Dream Coin/Note – Create your own futuristic currency with drawings that reflect values and symbols of the future.</li> 
+		<li>Financial Quiz Corner – Test your money smarts with quick quizzes on saving, spending, and budgeting to win small prizes.</li> 
+		<li>Smart Choices Wall – Decide between spending or saving in real-life scenarios and see how your peers think about money.</li>
+		<li>Advertise Careers in Finance – Explore exciting career paths in the world of finance through creative posters or mini displays.</li>
+		<li>Win Gifts and Prizes</li>
+            </ul>
+            <p style="margin-top: 15px; color: var(--text-secondary);">Just Bring Your Curiosity – We’ll Provide Mini-Ledgers, Charts, and All the Supplies You Need</p>
+        </div>
+
+        <h2 id="quotes">💬 INSPIRATION & QUOTES</h2>
+        <div class="section-box">
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li>"Compound interest is the eighth wonder of the world." — inspired by Albert Einstein</li>
+                <li>"If you don't find a way to make money while you sleep, you will work until you die." — inspired by Warren Buffett</li>
+                <li>"Every financial problem is an opportunity for a new strategy."</li>
+            </ul>
+        </div>
+
+        <h2 id="examples">🏆 FAMOUS FINANCIAL EXAMPLES</h2>
+        <div class="section-box">
+            <ul>
+                <li>Visa / Electronic Payments — designed a system for secure, instant global money transfer.</li>
+                <li>Stock Market — clever design for pooling capital and sharing ownership/risk.</li>
+                <li>FinTech Apps (e.g., Revolut) — designed simple, usable banking without physical branches.</li>
+                <li>Local idea: UAE’s push for Green Bonds to fund sustainable energy projects.</li>
+            </ul>
+        </div>
+
+        <h2 id="team">👥 OUR TEAM</h2>
+        <div class="section-box">
+            <p>We are a team of future financial thinkers from Delhi Private School Dubai. We love analyzing money and sharing financial knowledge.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Saanya Gupta</td><td>7A</td></tr>
+                    <tr><td>Mishika Mehta</td><td>7A</td></tr>
+                    <tr><td>Raaya Pereira</td><td>7A</td></tr>
+                    <tr><td>Anam Sadiq</td><td>7A</td></tr>
+                    <tr><td>Anika Ashish</td><td>7G</td></tr>
+                    <tr><td>Shivani Elango</td><td>7A</td></tr>
+                </tbody>
+            </table>
+            <div class="mentor-section">
+                <p><strong>Parent Mentor</strong> - Shruti Mehta</p>
+                <p><strong>Teacher In-charge</strong> - Jyoti Mohanty</p>
+            </div>
+        </div>
+
+        <h2 id="venue">📍 VENUE</h2>
+       
+ <div class="section-box">
+            <p>Delhi Private School Dubai</p>
+            <p><strong style="color: var(--accent-light);">Event:</strong> MoneySense — Finance Your Future (2025)</p>
+            <p style="color: var(--text-secondary);
+margin-top: 10px;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2922.9468742281547!2d55.119284109821166!3d25.039090337995994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f13ff8de1a0f1%3A0x35bfaa69582e3d0d!2sDelhi%20Private%20School%20Dubai!5e1!3m2!1sen!2sae!4v1760872612769!5m2!1sen!2sae" width="100%" height="450" style="border:0; margin-top: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </p>
+        </div>
+        
+        
+        <h2 id="steps">🌱 HOW TO START LEARNING FINANCE (BEGINNER STEPS)</h2>
+        <div class="section-box">
+            <ul class="steps-list">
+                <li>Keep a financial journal — track every penny you earn and spend.</li>
+                <li>Pick small projects — redesign your phone bill or a savings goal.</li>
+                <li>Learn one tool at a time — start with Excel or a simple budgeting app.</li>
+                <li>Share your financial goals and ask for advice (from parents/teachers).</li>
+                <li>Collect your best financial research pieces in a simple portfolio (reports or charts).</li>
+            </ul>
+        </div>
+
+        <div class="closing">
+            <strong>🌟 Closing — Learn. Plan. Invest.</strong>
+            <p style="margin-top: 15px; font-size: 1em;">Finance isn't just a subject — it's a way to see the world. Learn to control your money now, and you’ll control your future. Stop by our booth at Udaan and start financing your dreams.</p>
+            <p style="margin-top: 25px;">Visit our Booth ↓</p>
+            <a href="#about" class="action-button">Go to Booth</a>
+        </div>
+
+        <div class="footer">
+            MoneySense — Finance Your Future
+            <br>Presented by Udaan - Finance Team • Delhi Private School Dubai • © 2025
+        </div>
+        
+    </div>
+
+    <button id="chat-icon" aria-label="Open Chatbot">&#128172;</button>
+
+    <div id="chat-window">
+        <div id="chat-header">
+            <span>MoneySense Bot</span>
+            <button id="close-chat-btn">&times;</button>
+        </div>
+        <div id="chat-body">
+            </div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off">
+            <button id="chat-send-btn">Send</button>
+        </div>
+    </div>
+    <script>
+        // --- Theme Toggle Script (Start) ---
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+                toggleButton.innerHTML = '&#9790;';
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                toggleButton.innerHTML = '&#9728;';
+            }
+        }
+        const savedTheme = localStorage.getItem('theme') || 'light'; 
+        setTheme(savedTheme);
+        toggleButton.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                setTheme('light');
+            } else {
+                setTheme('dark');
+            }
+        });
+
+        // --- Money Confetti Script (Start) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const numConfetti = 150;
+            const confettiChars = ['💵', '💰', '🪙', '✨', '⭐']; 
+            
+            function createConfettiPiece() {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.textContent = confettiChars[Math.floor(Math.random() * confettiChars.length)]; 
+                piece.style.left = `${Math.random() * 100}vw`;
+                piece.style.animationDelay = `${Math.random() * 2}s`;
+                piece.style.animationDuration = `${3 + Math.random() * 3}s`; 
+                document.body.appendChild(piece);
+
+                piece.addEventListener('animationend', () => {
+                    piece.remove();
+                });
+            }
+            setTimeout(() => {
+                for (let i = 0; i < numConfetti; i++) {
+                    createConfettiPiece();
+                }
+            }, 100); 
+        });
+
+
+        // --- Risk Tolerance Quiz Script (Start) ---
+        document.getElementById('riskQuizForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let totalScore = 0;
+            const form = event.target;
+            const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            let allAnswered = true;
+
+            questions.forEach(qName => {
+                const selected = form.elements[qName].value;
+                if (!selected) {
+                    allAnswered = false;
+                }
+                totalScore += parseInt(selected || 0);
+            });
+
+            const resultsDiv = document.getElementById('quiz-results');
+            const riskLevelSpan = document.getElementById('risk-level');
+            const riskDescriptionP = document.getElementById('risk-description');
+            const riskExamplesSpan = document.getElementById('risk-examples');
+
+            if (!allAnswered) {
+                alert("Please answer all 5 questions before calculating your profile!");
+                resultsDiv.style.display = 'none';
+                return;
+            }
+
+            let riskProfile = '';
+            let description = '';
+            let examples = '';
+
+            if (totalScore <= 7) {
+                riskProfile = 'Conservative (Low Risk)';
+                description = 'You prioritize stability and capital preservation. You prefer guaranteed returns and worry about market ups and downs.';
+                examples = 'Savings Accounts, Fixed Deposits (FDs), Government Bonds, Real Estate (Stable rental income).';
+            } else if (totalScore <= 12) {
+                riskProfile = 'Moderate (Balanced Risk)';
+                description = 'You are willing to accept some level of risk for better returns. You aim for a balance between growth and security.';
+                examples = 'Diversified Mutual Funds, Index Funds (e.g., S&P 500), Large, stable company stocks.';
+            } else {
+                riskProfile = 'Aggressive (High Risk)';
+                description = 'You actively seek high returns and are comfortable with major market volatility. You see risk as an opportunity for rapid growth.';
+                examples = 'Individual Tech Stocks, Start-up Ventures, Cryptocurrency, Commodities (Gold/Oil).';
+            }
+
+            riskLevelSpan.textContent = riskProfile;
+            riskDescriptionP.textContent = description;
+            riskExamplesSpan.textContent = examples;
+            resultsDiv.style.display = 'block';
+
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // --- CHATBOT SCRIPT - DIVERSIFIED LOGIC ---
+        const chatIcon = document.getElementById('chat-icon');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatBody = document.getElementById('chat-body');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send-btn');
+
+        chatIcon.addEventListener('click', () => {
+            chatWindow.style.display = 'flex';
+            chatInput.focus();
+            if (chatBody.children.length === 0) {
+                appendMessage('bot', "Hello! I'm MoneySense Bot. I can answer questions about **Team, Venue, Careers, Skills, AI, Activities, Challenges,** and **Beginner Steps**.");
+            }
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+        });
+
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+        
+        // --- Core Text Processing Function for Forgiveness ---
+        function normalizeInput(input) {
+            // Convert to lowercase, remove punctuation/extra spaces, remove common filler words
+            return input
+                .toLowerCase()
+                .replace(/[.,/#!$%\^&\*;:{}=\-_`~()]/g,"")
+                .replace(/\s{2,}/g," ")
+                .replace(/i am|i want to|can you tell me|what is the|tell me about|more about/g, '')
+                .trim();
+        }
+
+        // --- Diversified Bot Knowledge Base and Logic ---
+        function getBotResponse(input) {
+            const normalizedInput = normalizeInput(input);
+
+            // 1. Team/People/Contact
+            const teamKeywords = ['team', 'member', 'who made', 'mentor', 'contact', 'people', 'saanya', 'mishika'];
+            if (teamKeywords.some(keyword => normalizedInput.includes(keyword) && normalizedInput.length > 2)) {
+                return "The **MoneySense** booth was created by students from Grade 7A and 7G. Our mentor is **Shruti Mehta**, and the teacher in-charge is **Jyoti Mohanty**. You can find the full list under the 'Our Team' section!";
+            }
+
+            // 2. Venue/Location/Event
+            const venueKeywords = ['where', 'locashon', 'venue', 'find', 'school', 'event', 'dps', 'udaan'];
+            if (venueKeywords.some(keyword => normalizedInput.includes(keyword) && normalizedInput.length > 2)) {
+                return "We are located at **Delhi Private School Dubai** for the **Udaan 2025** event. Look for the 'MoneySense' booth! You can find a link to the venue details on the website.";
+            }
+            
+            // 3. Careers/Future
+            const careerKeywords = ['career', 'jobs', 'future', 'fintech', 'what i can be', 'work', 'developer', 'analyst'];
+            if (careerKeywords.some(keyword => normalizedInput.includes(keyword) || normalizedInput.includes('fintech'))) {
+                return "The future of finance is exciting! Careers include **FinTech App Developer, Financial Data Analyst,** and **Green Finance Specialist**. Many roles require strong data and tech skills. See the 'Future of Finance' section for details.";
+            }
+
+            // 4. Definition of Finance
+            const financeKeywords = ['what is finance', 'define finance', 'fynance', 'moneymaint', 'about money'];
+            if (financeKeywords.some(keyword => normalizedInput.includes(keyword) || normalizedInput.includes('finance'))) {
+                return "Finance is the process of managing **money, credit, and investments** to solve problems related to risk, future value, and resource allocation. It's about smart money decisions.";
+            }
+            
+            // 5. Skills
+            const skillsKeywords = ['skills', 'skillz', 'how to learn', 'what i need', 'analitic', 'excel', 'communication', 'teamwork'];
+            if (skillsKeywords.some(keyword => normalizedInput.includes(keyword) || normalizedInput.includes('skills'))) {
+                return "Key skills for finance include **Numeracy & Analytics**, **Digital Tools** (like Excel, Python), and strong **Communication**. Curiosity is also essential! Look at the 'Skills You Need' section.";
+            }
+
+            // 6. Risk Quiz
+            const quizKeywords = ['quiz', 'risk', 'profile', 'test', 'question', 'tollerance', 'conservative', 'aggressive'];
+            if (quizKeywords.some(keyword => normalizedInput.includes(keyword))) {
+                 return "The **Risk Quiz** helps you find your investment style: **Conservative, Moderate, or Aggressive**. It's a fun way to understand how comfortable you are with losing money for the chance of high returns. Scroll down to the 'Risk Quiz' section to take it!";
+            }
+
+            // 7. AI/Technology
+            const aiKeywords = ['ai', 'robot', 'tech', 'automation', 'fraud', 'algorithmic'];
+            if (aiKeywords.some(keyword => normalizedInput.includes(keyword))) {
+                 return "**AI** is a powerful tool in finance for tasks like **fraud detection** and **algorithmic trading**. However, **human judgment** is vital for ethics and complex strategy. AI assists, it doesn't replace, strategic thinkers.";
+            }
+
+            // 8. Booth Activities
+            const activityKeywords = ['activity', 'booth', 'do', 'try', 'what can i do', 'budget', 'trade', 'interest', 'badges'];
+            if (activityKeywords.some(keyword => normalizedInput.includes(keyword))) {
+                 return "At the booth, you can **Create your own budget**, **Trade an imaginary stock** to learn risk, and win badges by completing a **compound interest challenge**! Head to the 'Booth Activities' section for the full list.";
+            }
+            
+            // 9. Motivation/Quotes/Challenges
+            const challengeKeywords = ['challenge', 'hard', 'problem', 'volatility', 'debt', 'quote', 'motivation', 'einstein', 'buffett'];
+            if (challengeKeywords.some(keyword => normalizedInput.includes(keyword))) {
+                 if (normalizedInput.includes('quote') || normalizedInput.includes('einstein') || normalizedInput.includes('buffett')) {
+                    return "A famous quote is: **'Compound interest is the eighth wonder of the world.'** Challenges include market volatility and impulse spending, but learning new strategies is key!";
+                 }
+                 return "The main challenges involve **market volatility**, controlling **impulse spending**, and managing **debt**. We believe every challenge is an opportunity to learn and strategize!";
+            }
+
+            // 10. Famous Examples
+            const exampleKeywords = ['example', 'visa', 'stock market', 'real world', 'revolut', 'green bond', 'payment'];
+            if (exampleKeywords.some(keyword => normalizedInput.includes(keyword))) {
+                 return "Famous examples include **Visa/Electronic Payments**, the design of the **Stock Market**, **FinTech Apps** like Revolut, and local ideas like the UAE’s **Green Bonds**.";
+            }
+            
+            // 11. Beginner Steps/How to Start
+            const stepsKeywords = ['start', 'how to start', 'beginner', 'journal', 'excel', 'portfolio'];
+            if (stepsKeywords.some(keyword => normalizedInput.includes(keyword))) {
+                 return "To start learning, we recommend keeping a **financial journal**, picking small projects (like redesigning a bill), and learning basic digital tools like **Excel** or a budgeting app. See the 'Beginner Steps' section for more!";
+            }
+
+            // 12. Greetings
+            if (normalizedInput.includes('hello') || normalizedInput.includes('hi') || normalizedInput.includes('hey') || normalizedInput.length < 3) {
+                return "Hello! I'm MoneySense Bot, ready to help you navigate our site. Try asking about **careers, the risk quiz, or booth activities**.";
+            }
+
+            // 13. Thank You
+            if (normalizedInput.includes('thank you') || normalizedInput.includes('thanks') || normalizedInput.includes('thnks')) {
+                return "You're very welcome! Let me know if you have any other questions.";
+            }
+
+            // 14. Default/Fallback
+            return "I apologize, I can't quite understand that request. I can answer questions about: **Team, Venue, Careers, Skills, Quiz, AI, Activities, Challenges, or Beginner Steps**. Try using one of those keywords!";
+        }
+
+        // Handle sending the message
+        function sendMessage() {
+            const userInput = chatInput.value.trim();
+            if (userInput === '') return;
+
+            appendMessage('user', userInput);
+            chatInput.value = '';
+
+            const botResponse = getBotResponse(userInput);
+
+            setTimeout(() => {
+                appendMessage('bot', botResponse);
+            }, 500);
+        }
+
+        // Event listeners for sending message
+        chatSendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
