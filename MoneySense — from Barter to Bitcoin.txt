@@ -351,8 +351,9 @@
                 <li>Blockchain Consultant (Advises firms on using blockchain for secure transactions)</li>
                 <li>Green Finance Specialist (Funds sustainable energy projects)</li>
                 <li>AI Ethics Specialist (Ensures AI systems are fair, transparent, and responsible)</li>
-                <li>Metaverse Asset Evaluator (Assesses value of digital land and virtual goods)</li>
-                <li>Cyber Risk Underwriter (Insures businesses against hacking losses)</li>
+                <li>Finance Wellness Coach (Helping you build smart money habits for a stress-free, successful future)</li>
+                <li> Insurance App Developer(Building smarter apps for better insurance)</li>
+<li>Space Insurance Specialist(Protecting missions beyond Earth with smart space insurance solutions)</li>
             </ul>
         </div>
 
@@ -405,9 +406,9 @@
         <div class="section-box">
             <p>At our booth you can:</p>
             <ul>
-                <li>Design Your Dream Coin/Note – Create your own futuristic currency with drawings that reflect values and symbols of the future.</li> 
-		<li>Financial Quiz Corner – Test your money smarts with quick quizzes on saving, spending, and budgeting to win small prizes.</li> 
-		<li>Smart Choices Wall – Decide between spending or saving in real-life scenarios and see how your peers think about money.</li>
+                <li>Gallery Section – Explore our gallery section with interactive boards that make learning about finance engaging, visual, and hands-on.</li> 
+		<li>Financial Quiz Detected by AI Corner – Test your financial knowledge like never before with our interactive quiz that responds to your hand gestures!</li> 
+		<li>Financial Horoscope - Discover your money personality with our Financial Horoscope — where astrology meets smart financial insights.</li>
 		<li>Advertise Careers in Finance – Explore exciting career paths in the world of finance through creative posters or mini displays.</li>
 		<li>Win Gifts and Prizes</li>
             </ul>
@@ -452,8 +453,6 @@
                     <tr><td>Shivani Elango</td><td>7A</td></tr>
                 </tbody>
             </table>
-            <div class="mentor-section">
-                <p><strong>Parent Mentor</strong> - Shruti Mehta</p>
                 <p><strong>Teacher In-charge</strong> - Jyoti Mohanty</p>
             </div>
         </div>
@@ -468,6 +467,87 @@ margin-top: 10px;">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2922.9468742281547!2d55.119284109821166!3d25.039090337995994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f13ff8de1a0f1%3A0x35bfaa69582e3d0d!2sDelhi%20Private%20School%20Dubai!5e1!3m2!1sen!2sae!4v1760872612769!5m2!1sen!2sae" width="100%" height="450" style="border:0; margin-top: 15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </p>
         </div>
+<!-- Financial Horoscope Section -->
+<section id="financial-horoscope" style="padding: 40px 20px; text-align: center; background-color: #f9f9f9; font-family: Arial, sans-serif;">
+  <h2 style="color: #2E86C1;">Discover Your Financial Horoscope</h2>
+  <p style="max-width: 600px; margin: 10px auto 20px auto; font-size: 16px; color: #555;">
+    Find out how your zodiac traits influence your spending, saving, and investment habits! Get personalized insights and tips to manage your money better.
+  </p>
+  <a href="https://saanya23.github.io/Financeudaanhoroscope/Finance.html" target="_blank" 
+     style="display: inline-block; padding: 12px 25px; font-size: 16px; color: #fff; background-color: #2E86C1; border-radius: 8px; text-decoration: none; transition: 0.3s;">
+    Explore Your Horoscope
+  </a>
+</section>
+<!-- AI-Detected Financial Quiz Section -->
+<section id="ai-quiz" style="padding: 40px 20px; text-align: center; background-color: #eef6fb; font-family: Arial, sans-serif;">
+  <h2 style="color: #28B463;">Test Your Financial Knowledge</h2>
+  <p style="max-width: 600px; margin: 10px auto 20px auto; font-size: 16px; color: #555;">
+    Try our interactive financial quiz powered by AI! Answer questions using your hand gestures and discover how much you really know about managing money.
+  </p>
+  <a href="https://saanya23.github.io/Quizz/Quiz.html" target="_blank" 
+     style="display: inline-block; padding: 12px 25px; font-size: 16px; color: #fff; background-color: #28B463; border-radius: 8px; text-decoration: none; transition: 0.3s;">
+    Take the Quiz
+  </a>
+</section>
+
+            <!-- Feedback & Polls Section -->
+<section id="feedback-polls" style="padding: 20px; max-width: 600px; margin: auto; font-family: Arial, sans-serif;">
+  <h2>Feedback & Polls</h2>
+
+  <!-- Poll -->
+  <div id="poll" style="margin-bottom: 30px;">
+    <h3>How did you like our finance booth?</h3>
+    <form id="pollForm">
+      <label><input type="radio" name="pollOption" value="Excellent"> Excellent</label><br>
+      <label><input type="radio" name="pollOption" value="Good"> Good</label><br>
+      <label><input type="radio" name="pollOption" value="Average"> Average</label><br>
+      <label><input type="radio" name="pollOption" value="Poor"> Poor</label><br><br>
+      <button type="button" onclick="submitPoll()">Submit Poll</button>
+    </form>
+    <p id="pollResult" style="color: green; margin-top: 10px;"></p>
+  </div>
+
+  <!-- Feedback Form -->
+  <div id="feedback">
+    <h3>Share Your Feedback</h3>
+    <form id="feedbackForm">
+      <textarea id="feedbackText" rows="4" cols="50" placeholder="Your feedback..." style="width: 100%; padding: 10px;"></textarea><br><br>
+      <button type="button" onclick="submitFeedback()">Submit Feedback</button>
+    </form>
+    <p id="feedbackResult" style="color: green; margin-top: 10px;"></p>
+  </div>
+</section>
+
+<script>
+  function submitPoll() {
+    const options = document.getElementsByName('pollOption');
+    let selected = '';
+    for (const option of options) {
+      if (option.checked) {
+        selected = option.value;
+        break;
+      }
+    }
+
+    if (selected) {
+      document.getElementById('pollResult').innerText = `Thanks for your response: ${selected}`;
+      document.getElementById('pollForm').reset();
+    } else {
+      alert('Please select an option before submitting.');
+    }
+  }
+
+  function submitFeedback() {
+    const feedback = document.getElementById('feedbackText').value.trim();
+    if (feedback) {
+      document.getElementById('feedbackResult').innerText = 'Thank you for your feedback!';
+      document.getElementById('feedbackForm').reset();
+    } else {
+      alert('Please enter your feedback before submitting.');
+    }
+  }
+</script>
+
         
         
         <h2 id="steps">🌱 HOW TO START LEARNING FINANCE (BEGINNER STEPS)</h2>
@@ -768,4 +848,5 @@ margin-top: 10px;">
         });
     </script>
 </body>
+
 </html>
